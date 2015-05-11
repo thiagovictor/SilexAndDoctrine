@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %} ApiAndSilex {% endblock %}</title>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="/css/theme.css" rel="stylesheet">
+        <script src="/js/ie-emulation-modes-warning.js"></script> <!-- ou pode-se usar assim ==> app.request.basepath!-->
+    </head>
+
+    <body role="document">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path('inicio') }}">API And Silex</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="{{ path('produtos_listar') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Produtos <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('produto_novo') }}">Novo</a></li>
+                                <li><a href="{{ path('produtos_listar') }}">Listar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+            {% block conteudo %}{% endblock %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+</body>
+</html>
+

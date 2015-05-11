@@ -1,0 +1,29 @@
+{% extends "template.twig" %}
+
+{% block conteudo %}
+    <form class="form-horizontal" method="POST" action="{{ path('produto_novo') }}">
+        <div class="form-group">
+            <label for="nome" class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-4">
+                <input type="text" name="nome" class="form-control" id="nome" placeholder="Nome">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="descricao" class="col-sm-2 control-label">Descrição</label>
+            <div class="col-sm-6">
+                <input type="text" name="descricao" class="form-control" id="descricao" placeholder="Descrição">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="valor" class="col-sm-2 control-label">Valor</label>
+            <div class="col-sm-2">
+                <input type="text" name="valor" class="form-control" id="valor" placeholder="Valor">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Cadastrar</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
