@@ -2,17 +2,17 @@
 
 namespace Code\Sistema\Service;
 
-use Code\Sistema\Mapper\ProdutoMapper;
+use Doctrine\ORM\EntityManager;
 use Code\Sistema\Entity\Produto;
 
 class ProdutoService {
 
-    private $mapper;
+    private $em;
     private $produto;
     private $message;
 
-    public function __construct(ProdutoMapper $mapper, Produto $produto) {
-        $this->mapper = $mapper;
+    public function __construct(EntityManager $em, Produto $produto) {
+        $this->em = $em;
         $this->produto = $produto;
     }
 
@@ -30,8 +30,11 @@ class ProdutoService {
 
     public function insert(array $data = array()) {
         if ($this->popular($data)) {
-            return $this->mapper->insert($this->produto);
+            $this->em->persist($this->produto);
+            $this->em->flush();
+            return true;
         }
+        $this->setMessage("Não foi possivel popular a entidade");
         return false;
     }
 
@@ -40,35 +43,30 @@ class ProdutoService {
             $this->setMessage("Parametro :id nao encontrado");
             return false;
         }
-        if(!$this->find($data["id"])){
-             $this->setMessage("Nao foi possivel localizar o registro");
+        $this->produto = $this->em->getReference("Code\Sistema\Entity\Produto", $data["id"]);
+        if (!$this->popular($data)) {
+            $this->setMessage("Não foi possivel popular a entidade");
             return false;
         }
-        if ($this->popular($data)) {
-            return $this->mapper->update($this->produto);
-        }
-        return false;
+        $this->em->persist($this->produto);
+        $this->em->flush();
+        return true;
     }
 
     public function delete($id) {
-        if(!$this->find($id)){
-             $this->setMessage("Nao foi possivel localizar o registro");
-            return false;
-        }
-        $result = $this->mapper->delete($id);
-        if (!$result) {
-            $this->setMessage("Nao foi possivel excluir o registro");
-            return false;
-        }
-        return $result;
+        $this->produto = $this->em->getReference("Code\Sistema\Entity\Produto", $id);
+        $this->em->remove($this->produto);
+        return true;
     }
 
     public function findAll() {
-        return $this->mapper->findAll();
+        $repo = $this->em->getRepository("Code\Sistema\Entity\Produto");
+        return $repo->findAll();
     }
 
     public function find($id) {
-        return $this->mapper->find($id);
+        $repo = $this->em->getRepository("Code\Sistema\Entity\Produto");
+        return $repo->find($id);
     }
 
     function getMessage() {

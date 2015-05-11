@@ -2,11 +2,15 @@
     "require": {
         "silex/silex": "~1.2",
         "twig/twig": ">=1.0,<2.0-dev",
-        "symfony/twig-bridge": "~2.3"
+        "symfony/twig-bridge": "~2.3",
+        "doctrine/orm": "~2.4"
+    },
+    "config": {
+        "bin-dir": "bin/"
     },
     "autoload": {
         "psr-4": {
-            "Code\\Sistema\\":"src/Code/Sistema/"
+            "Code\\Sistema\\": "src/Code/Sistema/"
         }
     }
 }

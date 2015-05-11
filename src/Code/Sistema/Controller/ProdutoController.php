@@ -21,8 +21,9 @@ class ProdutoController implements ControllerProviderInterface {
         })->bind('produto_novo');
 
         $controller->post('/novo', function (Request $request) use ($app) {
-            $app['produtoService']->insert($request->request->all());
-            return $app['twig']->render('produto/produto_novo.twig', []);
+            $serviceManager = $app['produtoService'];
+            $result = $serviceManager->insert($request->request->all());
+            return $app['twig']->render('produto/produto_novo.twig', ["success" => $result, "Message" => $serviceManager->getMessage()]);
         })->bind('produto_novo_post');
 
         $controller->get('/edit/{id}', function ($id) use ($app) {

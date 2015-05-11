@@ -2,10 +2,33 @@
 
 namespace Code\Sistema\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="produto")
+ */
 class Produto {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue 
+     */
     private $id;
+    
+    /**
+     * @ORM\Column(type="string", length=255) 
+     */
     private $nome;
+    
+    /**
+     * @ORM\Column(type="string", length=255) 
+     */
     private $descricao;
+    
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=2)
+     */
     private $valor;
     
     public function __construct($nome="",$descricao="",$valor="",$id="") {
