@@ -56,6 +56,7 @@ class ProdutoService {
     public function delete($id) {
         $this->produto = $this->em->getReference("Code\Sistema\Entity\Produto", $id);
         $this->em->remove($this->produto);
+        $this->em->flush();
         return true;
     }
 
