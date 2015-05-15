@@ -7,14 +7,22 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProdutoController implements ControllerProviderInterface {
-
+    private $registros_por_pagina = 5;
     public function connect(Application $app) {
         $controller = $app['controllers_factory'];
 
         $controller->get('/', function () use ($app) {
-            $result = $app['produtoService']->findAll();
-            return $app['twig']->render('produto/produtos.twig', ['produtos' => $result]);
+            $result = $app['produtoService']->findPagination(0,  $this->registros_por_pagina);
+            return $app['twig']->render('produto/produtos.twig', ['produtos' => $result, 'page_atual'=>1,'numero_paginas'=>ceil($app['produtoService']->getRows()/$this->registros_por_pagina)]);
         })->bind('produtos_listar');
+        
+         $controller->get('/{page}', function ($page) use ($app) {
+            if($page < 1 or $page > ceil($app['produtoService']->getRows()/$this->registros_por_pagina) ){
+                $page = 1;
+            }
+            $result = $app['produtoService']->findPagination((($page-1)*$this->registros_por_pagina),  $this->registros_por_pagina);
+            return $app['twig']->render('produto/produtos.twig', ['produtos' => $result, 'page_atual'=>$page, 'numero_paginas'=>ceil($app['produtoService']->getRows()/$this->registros_por_pagina)]);
+        })->bind('produtos_listar_pagination');
 
         $controller->get('/novo', function () use ($app) {
             return $app['twig']->render('produto/produto_novo.twig', []);

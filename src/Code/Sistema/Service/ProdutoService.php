@@ -56,12 +56,23 @@ class ProdutoService {
     public function delete($id) {
         $this->produto = $this->em->getReference("Code\Sistema\Entity\Produto", $id);
         $this->em->remove($this->produto);
+        $this->em->flush();
         return true;
     }
 
     public function findAll() {
         $repo = $this->em->getRepository("Code\Sistema\Entity\Produto");
         return $repo->findAll();
+    }
+
+    public function findPagination($firstResult, $maxResults) {
+        $repo = $this->em->getRepository("Code\Sistema\Entity\Produto");
+        return $repo->findPagination($firstResult, $maxResults);
+    }
+
+    public function getRows() {
+        $repo = $this->em->getRepository("Code\Sistema\Entity\Produto");
+        return $repo->getRows();
     }
 
     public function find($id) {
