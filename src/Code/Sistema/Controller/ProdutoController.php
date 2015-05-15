@@ -16,7 +16,7 @@ class ProdutoController implements ControllerProviderInterface {
             return $app['twig']->render('produto/produtos.twig', ['produtos' => $result, 'page_atual'=>1,'numero_paginas'=>ceil($app['produtoService']->getRows()/$this->registros_por_pagina)]);
         })->bind('produtos_listar');
         
-         $controller->get('/{page}', function ($page) use ($app) {
+         $controller->get('/page/{page}', function ($page) use ($app) {
             if($page < 1 or $page > ceil($app['produtoService']->getRows()/$this->registros_por_pagina) ){
                 $page = 1;
             }
