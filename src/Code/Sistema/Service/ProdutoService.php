@@ -9,15 +9,32 @@ class ProdutoService {
 
     private $em;
     private $produto;
-    private $message;
+    private $message = array();
+    private $validators = array();
 
     public function __construct(EntityManager $em, Produto $produto) {
         $this->em = $em;
         $this->produto = $produto;
     }
 
+    public function checkValidator($metodo, $valor) {
+        foreach ($this->validators as $key => $validator) {
+            if ($metodo != $key) {
+                continue;
+            }
+            if (!$validator->isValid($valor)) {
+                $this->message[] = strtoupper($key)." : ".$validator->getMessage();
+                return false;
+            }
+        }
+        return true;
+    }
+
     private function popular(array $data = array()) {
         foreach ($data as $metodo => $valor) {
+            if (!$this->checkValidator($metodo, $valor)) {
+                return false;
+            }
             $metodo = 'set' . ucfirst($metodo);
             if (!method_exists($this->produto, $metodo)) {
                 $this->setMessage("Nao foi possivel converte-lo para um produto valido. Verifique os campos enviados: nome:descricao:valor");
@@ -34,7 +51,6 @@ class ProdutoService {
             $this->em->flush();
             return true;
         }
-        $this->setMessage("Não foi possivel popular a entidade");
         return false;
     }
 
@@ -85,7 +101,17 @@ class ProdutoService {
     }
 
     function setMessage($message) {
-        $this->message = $message;
+        $this->message[] = $message;
+        return $this;
+    }
+
+    function setValidators($indice, $validator) {
+        $this->validators[$indice] = $validator;
+        return $this;
+    }
+
+    function setArrayValidators(array $validators) {
+        $this->validators = $validators;
         return $this;
     }
 

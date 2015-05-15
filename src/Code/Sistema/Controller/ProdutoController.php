@@ -25,7 +25,7 @@ class ProdutoController implements ControllerProviderInterface {
         })->bind('produtos_listar_pagination');
 
         $controller->get('/novo', function () use ($app) {
-            return $app['twig']->render('produto/produto_novo.twig', []);
+            return $app['twig']->render('produto/produto_novo.twig', ["Message"=>array()]);
         })->bind('produto_novo');
 
         $controller->post('/novo', function (Request $request) use ($app) {
