@@ -9,35 +9,42 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="produto")
  */
 class Produto {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue 
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=255) 
      */
     private $nome;
-    
+
     /**
      * @ORM\Column(type="string", length=255) 
      */
     private $descricao;
-    
+
     /**
      * @ORM\Column(type="decimal", precision=15, scale=2)
      */
     private $valor;
-    
-    public function __construct($nome="",$descricao="",$valor="",$id="") {
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Categoria")
+     * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
+     */
+    private $categoria;
+
+    public function __construct($nome = "", $descricao = "", $valor = "", $id = "") {
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->valor = $valor;
         $this->id = $id;
     }
-    
+
     function getId() {
         return $this->id;
     }
@@ -71,6 +78,15 @@ class Produto {
 
     function setValor($valor) {
         $this->valor = $valor;
+        return $this;
+    }
+    
+    function getCategoria() {
+        return $this->categoria;
+    }
+
+    function setCategoria($categoria) {
+        $this->categoria = $categoria;
         return $this;
     }
 

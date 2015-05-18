@@ -26,12 +26,18 @@ class Application extends ApplicationSilex {
             return $produtoService;
         };
 
+        $app['categoriaService'] = function () use($app) {
+            return new ProdutoService($app['EntityManager'], new Produto());
+        };
+
         $app->get('/', function () use ($app) {
             return $app['twig']->render('index.twig', []);
         })->bind('inicio');
 
         $app->mount("/produtos", new Controller\ProdutoController());
         $app->mount("/api/produtos", new Controller\ProdutoAPIController);
+        $app->mount("/categorias", new Controller\CategoriaController);
+        
     }
 
 }
