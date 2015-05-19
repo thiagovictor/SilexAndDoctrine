@@ -13,5 +13,10 @@ class ProdutoService extends AbstractService {
         $this->object = $produto;
         $this->entity = "Code\Sistema\Entity\Produto";
     }
+    
+    public function ajustaData(array $data = array()) {
+        $data["categoria"] = $this->em->getReference("Code\Sistema\Entity\Categoria", $data["categoria"]);
+        return $data;
+    }
 
 }

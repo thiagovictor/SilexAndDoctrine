@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityManager;
 
 abstract class AbstractService {
 
-    private $em;
-    private $message = array();
-    private $validators = array();
+    protected $em;
+    protected $message = array();
+    protected $validators = array();
     protected $object;
     protected $entity;
 
@@ -28,9 +28,14 @@ abstract class AbstractService {
         }
         return true;
     }
-
+    
+    public function ajustaData(array $data = array()) {
+        return $data;
+    }
+    
     private function popular(array $data = array()) {
-        foreach ($data as $metodo => $valor) {
+        $data_checked = $this->ajustaData($data);
+        foreach ($data_checked as $metodo => $valor) {
             if (!$this->checkValidator($metodo, $valor)) {
                 return false;
             }

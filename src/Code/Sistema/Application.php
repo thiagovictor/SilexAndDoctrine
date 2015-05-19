@@ -4,7 +4,9 @@ namespace Code\Sistema;
 
 use Silex\Application as ApplicationSilex;
 use Code\Sistema\Service\ProdutoService;
+use Code\Sistema\Service\CategoriaSevice;
 use Code\Sistema\Entity\Produto;
+use Code\Sistema\Entity\Categoria;
 use Code\Sistema\Validator\NumericValidador;
 use Code\Sistema\Validator\IsBlankValidador;
 
@@ -18,7 +20,6 @@ class Application extends ApplicationSilex {
             $produtoService = new ProdutoService($app['EntityManager'], new Produto());
             $produtoService->setArrayValidators([
                 'valor' => new NumericValidador(),
-                //'valor' => new IsBlankValidador(),
                 'nome' => new IsBlankValidador(),
                 'descricao' => new IsBlankValidador()
                     ]
@@ -27,7 +28,9 @@ class Application extends ApplicationSilex {
         };
 
         $app['categoriaService'] = function () use($app) {
-            return new ProdutoService($app['EntityManager'], new Produto());
+            $categoriaService = new CategoriaSevice($app['EntityManager'], new Categoria());
+            $categoriaService->setValidators('nome', new IsBlankValidador());
+            return $categoriaService;
         };
 
         $app->get('/', function () use ($app) {

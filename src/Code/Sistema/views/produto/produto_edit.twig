@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="descricao" class="col-sm-2 control-label">Descrição</label>
+            <label for="descricao" class="col-sm-2 control-label">Descricao</label>
             <div class="col-sm-6">
                 <input type="text" name="descricao" class="form-control" id="descricao" value="{{ produto.descricao }}" placeholder="Descrição">
             </div>
@@ -27,8 +27,19 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="categoria" class="col-sm-2 control-label">Categoria</label>
+            <div class="col-sm-2">
+                <select name="categoria" class="form-control">
+                    <option value="{{ produto.categoria.id }}">{{ produto.categoria.nome }}</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                    {% endfor%}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Cadastrar</button>
+                <button type="submit" class="btn btn-default">Atualizar</button>
             </div>
         </div>
     </form>
