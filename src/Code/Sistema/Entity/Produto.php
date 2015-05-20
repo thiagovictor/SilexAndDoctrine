@@ -3,6 +3,7 @@
 namespace Code\Sistema\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Code\Sistema\Entity\ProdutoRepository")
@@ -37,8 +38,19 @@ class Produto {
      * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
      */
     private $categoria;
+    
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag")
+     * @ORM\JoinTable(name="produtos_tags",
+     *      joinColumns={@ORM\JoinColumn(name="produto_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $tags;
 
     public function __construct($nome = "", $descricao = "", $valor = "", $id = "") {
+        $this->tags = new ArrayCollection();
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->valor = $valor;
@@ -89,6 +101,16 @@ class Produto {
         $this->categoria = $categoria;
         return $this;
     }
+    
+    function getTags() {
+        return $this->tags->toArray();
+    }
+
+    function addTag(Tag $tag) {
+        $this->tags->add($tag);
+        return $this;
+    }
+
 
 
 }

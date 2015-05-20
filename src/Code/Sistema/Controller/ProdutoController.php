@@ -25,13 +25,18 @@ class ProdutoController implements ControllerProviderInterface {
         })->bind('produtos_listar_pagination');
 
         $controller->get('/novo', function () use ($app) {
-            return $app['twig']->render('produto/produto_novo.twig', ["Message"=>array(),"categorias"=>$app['categoriaService']->findall()]);
+            return $app['twig']->render('produto/produto_novo.twig', [
+                "Message"=>array(),
+                "categorias"=>$app['categoriaService']->findall(),
+                "tags"=> $app['tagService']->findall()
+            ]);
         })->bind('produto_novo');
 
         $controller->post('/novo', function (Request $request) use ($app) {
             $serviceManager = $app['produtoService'];
-            $result = $serviceManager->insert($request->request->all());
-            return $app['twig']->render('produto/produto_novo.twig', ["success" => $result, "Message" => $serviceManager->getMessage(),"categorias"=>$app['categoriaService']->findall()]);
+            var_dump($request->request->all());
+            //$result = $serviceManager->insert($request->request->all());
+            return $app['twig']->render('produto/produto_novo.twig', ["success" => $result, "Message" => $serviceManager->getMessage(),"categorias"=>$app['categoriaService']->findall(),"tags"=> $app['tagService']->findall()]);
         })->bind('produto_novo_post');
 
         $controller->get('/edit/{id}', function ($id) use ($app) {
