@@ -38,8 +38,36 @@
             </div>
         </div>
         <div class="form-group">
+            <div class="col-sm-2">	
+            </div>
+            <div class="col-sm-4">
+                Disponiveis
+                <select name="tags_disponiveis" id="tags_disponiveis" multiple="multiple" style="width: 100%; height: 130px;" onClick="return false"	onDblClick="moveSelectedOptions(this.form['tags_disponiveis'], this.form['tags_selecionadas'], true, this.form['tags'].value)">
+                    {% for tag in tags_disponiveis %}
+                        <option  value="{{tag.id}}">{{tag.nome}}</option>
+                    {% endfor%}
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <input type="hidden" id="tags" name="tags">	
+                <INPUT TYPE="button" style="width:48px" class="btn btn-default" VALUE=">" title="Seleciona Item" ONCLICK="moveSelectedOptions(this.form['tags_disponiveis'], this.form['tags_selecionadas'], true, this.form['tags'].value)"><br>
+                <INPUT TYPE="button" style="width:48px" class="btn btn-default" VALUE=">>" title="Seleciona Todos" ONCLICK="moveAllOptions(this.form['tags_disponiveis'], this.form['tags_selecionadas'], true, this.form['tags'].value)"><br>
+                <INPUT TYPE="button" style="width:48px" class="btn btn-default" VALUE="<" title="Remover Item" ONCLICK="moveSelectedOptions(this.form['tags_selecionadas'], this.form['tags_disponiveis'], true, this.form['tags'].value)"><br>
+                <INPUT TYPE="button" style="width:48px" class="btn btn-default" VALUE="<<" title="Remover Todos" ONCLICK="moveAllOptions(this.form['tags_selecionadas'], this.form['tags_disponiveis'], true, this.form['tags'].value)"><br>	
+            </div>
+
+            <div class="col-sm-4">
+                Selecionadas
+                <select name="tags_selecionadas" id="tags_selecionadas" multiple="multiple" style="width: 100%; height: 130px;" onDblClick="moveSelectedOptions(this.form['tags_selecionadas'], this.form['tags_disponiveis'], true, this.form['tags'].value)">
+                     {% for tag in tags_selecionadas %}
+                        <option  value="{{tag.id}}">{{tag.nome}}</option>
+                    {% endfor%}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Atualizar</button>
+                <button type="submit" onclick="document.getElementById('tags').value = getValuesFromSelect(document.getElementById('tags_selecionadas'))" class="btn btn-default">Atualizar</button>
             </div>
         </div>
     </form>

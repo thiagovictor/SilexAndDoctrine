@@ -13,10 +13,24 @@ class ProdutoService extends AbstractService {
         $this->object = $produto;
         $this->entity = "Code\Sistema\Entity\Produto";
     }
-    
+
     public function ajustaData(array $data = array()) {
+        $this->object->eraseTags();
         $data["categoria"] = $this->em->getReference("Code\Sistema\Entity\Categoria", $data["categoria"]);
+        if (empty($data["tags"])) {
+            return $data;
+        }
+        if (strstr($data["tags"], ',')) {
+            $IDs = explode(",", $data["tags"]);
+            foreach ($IDs as $value) {
+                $tags[] = $this->em->getReference("Code\Sistema\Entity\Tag", $value);
+            }
+            $data["tags"] = $tags;
+            return $data;
+        }
+        
+        $data["tag"] = $this->em->getReference("Code\Sistema\Entity\Tag", $data["tags"]);
+        unset($data["tags"]);
         return $data;
     }
-
 }

@@ -23,6 +23,7 @@ class Application extends ApplicationSilex {
             $produtoService->setArrayValidators([
                 'valor' => new NumericValidador(),
                 'nome' => new IsBlankValidador(),
+                'tags' => new IsBlankValidador(),
                 'descricao' => new IsBlankValidador()
                     ]
             );

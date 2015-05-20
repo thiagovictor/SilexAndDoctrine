@@ -19,4 +19,11 @@ class TagRepository extends EntityRepository {
                 ->getQuery()
                 ->getSingleScalarResult();
     }
+    
+    public function getTagsAvailable($ids) {
+        return $this->createQueryBuilder('c')
+                ->where("c.id not in ({$ids})")
+                ->getQuery()
+                ->getResult();
+    }
 }

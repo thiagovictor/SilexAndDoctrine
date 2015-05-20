@@ -38,15 +38,14 @@ class Produto {
      * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
      */
     private $categoria;
-    
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(name="produtos_tags",
      *      joinColumns={@ORM\JoinColumn(name="produto_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      *      )
-     **/
+     * */
     private $tags;
 
     public function __construct($nome = "", $descricao = "", $valor = "", $id = "") {
@@ -92,7 +91,7 @@ class Produto {
         $this->valor = $valor;
         return $this;
     }
-    
+
     function getCategoria() {
         return $this->categoria;
     }
@@ -101,16 +100,24 @@ class Produto {
         $this->categoria = $categoria;
         return $this;
     }
-    
+
     function getTags() {
         return $this->tags->toArray();
     }
-
-    function addTag(Tag $tag) {
+    
+    public function eraseTags() {
+        $this->tags = new ArrayCollection();
+    }
+    function setTag(Tag $tag) {
         $this->tags->add($tag);
         return $this;
     }
 
-
+    function setTags(array $tags = array()) {
+        foreach ($tags as $tag) {
+            $this->tags->add($tag);
+        }
+        return $this;
+    }
 
 }

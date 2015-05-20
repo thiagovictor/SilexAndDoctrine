@@ -13,5 +13,14 @@ class TagSevice extends AbstractService {
         $this->object = $tag;
         $this->entity = "Code\Sistema\Entity\Tag";
     }
+    
+    public function getTagsAvailable($tags) {
+        $string = "0";
+        foreach ($tags as $tag) {
+            $string .= ",{$tag->getId()}";
+        }
+        $repo = $this->em->getRepository($this->entity);
+        return $repo->getTagsAvailable($string);
+    }
 
 }

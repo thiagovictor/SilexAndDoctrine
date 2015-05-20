@@ -34,14 +34,13 @@ class ProdutoController implements ControllerProviderInterface {
 
         $controller->post('/novo', function (Request $request) use ($app) {
             $serviceManager = $app['produtoService'];
-            var_dump($request->request->all());
-            //$result = $serviceManager->insert($request->request->all());
+            $result = $serviceManager->insert($request->request->all());
             return $app['twig']->render('produto/produto_novo.twig', ["success" => $result, "Message" => $serviceManager->getMessage(),"categorias"=>$app['categoriaService']->findall(),"tags"=> $app['tagService']->findall()]);
         })->bind('produto_novo_post');
 
         $controller->get('/edit/{id}', function ($id) use ($app) {
             $result = $app['produtoService']->find($id);
-            return $app['twig']->render('produto/produto_edit.twig', ["produto" => $result,"categorias"=>$app['categoriaService']->findall()]);
+            return $app['twig']->render('produto/produto_edit.twig', ["produto" => $result,"categorias"=>$app['categoriaService']->findall(),"tags_selecionadas"=> $result->getTags(), "tags_disponiveis"=>$app['tagService']->getTagsAvailable($result->getTags())]);
         })->bind('produto_edit');
 
         $controller->post('/edit', function (Request $request) use ($app) {
