@@ -3,6 +3,7 @@
 namespace Code\Sistema\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 abstract class AbstractService {
 
@@ -76,8 +77,14 @@ abstract class AbstractService {
     public function delete($id) {
         $this->object = $this->em->getReference($this->entity, $id);
         $this->em->remove($this->object);
-        $this->em->flush();
-        return true;
+        try {
+            $this->em->flush();
+            return true;
+        } catch (ForeignKeyConstraintViolationException $ex) {
+            $this->setMessage($ex->getMessage());
+            return false;
+        }
+        
     }
 
     public function findAll() {

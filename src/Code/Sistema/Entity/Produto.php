@@ -35,16 +35,16 @@ class Produto {
 
     /**
      * @ORM\ManyToOne(targetEntity="Categoria")
-     * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id", onDelete="NO ACTION")
      */
     private $categoria;
 
     /**
      * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(name="produtos_tags",
-     *      joinColumns={@ORM\JoinColumn(name="produto_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     *      )
+     * joinColumns={@ORM\JoinColumn(name="produto_id", referencedColumnName="id", onDelete="CASCADE")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      * */
     private $tags;
 
@@ -104,10 +104,11 @@ class Produto {
     function getTags() {
         return $this->tags->toArray();
     }
-    
+
     public function eraseTags() {
         $this->tags = new ArrayCollection();
     }
+
     function setTag(Tag $tag) {
         $this->tags->add($tag);
         return $this;
