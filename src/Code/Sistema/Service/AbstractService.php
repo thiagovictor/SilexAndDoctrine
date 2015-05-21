@@ -22,17 +22,17 @@ abstract class AbstractService {
                 continue;
             }
             if (!$validator->isValid($valor)) {
-                $this->message[] = strtoupper($key)." : ".$validator->getMessage();
+                $this->message[] = strtoupper($key) . " : " . $validator->getMessage();
                 return false;
             }
         }
         return true;
     }
-    
+
     public function ajustaData(array $data = array()) {
         return $data;
     }
-    
+
     private function popular(array $data = array()) {
         $data_checked = $this->ajustaData($data);
         foreach ($data_checked as $metodo => $valor) {
@@ -84,7 +84,52 @@ abstract class AbstractService {
         $repo = $this->em->getRepository($this->entity);
         return $repo->findAll();
     }
-
+    
+    protected function toArray($objects) {
+        if(!isset($objects[0])){
+            return array();
+        }
+        $methods = get_class_methods($objects[0]);
+        $prop = array();
+        for ($i=0;$i < sizeof($methods); $i++){
+            if(substr($methods[$i],0,3) == 'get'){
+                $prop[$methods[$i]] = str_replace('get', '', $methods[$i]);
+                continue;
+            }
+        }
+        
+        foreach ($objects as $tag) {
+            $data = array();
+            foreach ($prop as $key => $value) {
+                $object = $tag->$key();
+                if(is_object($object)){
+                    $data[$value] = $this->toArray([0=>$object]);
+                    continue;
+                }
+                if(is_array($object)){
+                   $data[$value] = $this->toArray($object);
+                    continue;
+                }
+                $data[$value] = $tag->$key(); 
+            }
+            $return[] = $data;
+        }
+        return $return;
+    }
+    
+    public function findAllToArray() {
+        $repo = $this->em->getRepository($this->entity);
+        $objects = $repo->findAll();
+        return $this->toArray($objects);
+        
+    }
+    
+    public function findToArray($id) {
+        $repo = $this->em->getRepository($this->entity);
+        $object = $repo->find($id);
+        return $this->toArray([0=>$object]);
+    }
+    
     public function findPagination($firstResult, $maxResults) {
         $repo = $this->em->getRepository($this->entity);
         return $repo->findPagination($firstResult, $maxResults);

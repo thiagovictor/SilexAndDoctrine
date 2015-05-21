@@ -35,7 +35,7 @@ class Application extends ApplicationSilex {
             $categoriaService->setValidators('nome', new IsBlankValidador());
             return $categoriaService;
         };
-        
+
         $app['tagService'] = function () use($app) {
             $tagService = new TagSevice($app['EntityManager'], new Tag());
             $tagService->setValidators('nome', new IsBlankValidador());
@@ -47,9 +47,11 @@ class Application extends ApplicationSilex {
         })->bind('inicio');
 
         $app->mount("/produtos", new Controller\ProdutoController());
-        $app->mount("/api/produtos", new Controller\ProdutoAPIController());
         $app->mount("/categorias", new Controller\CategoriaController());
         $app->mount("/tags", new Controller\TagController());
+        $app->mount("/api/produtos", new Controller\ProdutoAPIController());
+        $app->mount("/api/tags", new Controller\TagAPIController());
+        $app->mount("/api/categorias", new Controller\CategoriaAPIController());
     }
 
 }
