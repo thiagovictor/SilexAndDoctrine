@@ -1,6 +1,12 @@
 {% extends "template.twig" %}
 
 {% block conteudo %}
+    {% for mens in Message %}
+        <div class="alert alert-danger" role="alert">
+            <ul>{{ mens }}</ul>
+        </div>
+    {% endfor%}
+    
     <form class="form-horizontal" method="POST" action="{{ path('produto_edit_post') }}">
         <div class="form-group">
             <label for="id" class="col-sm-2 control-label">ID</label>
@@ -30,7 +36,12 @@
             <label for="categoria" class="col-sm-2 control-label">Categoria</label>
             <div class="col-sm-2">
                 <select name="categoria" class="form-control">
-                    <option value="{{ produto.categoria.id }}">{{ produto.categoria.nome }}</option>
+                    {% if produto.categoria is not null %}
+                        <option value="{{ produto.categoria.id }}">{{ produto.categoria.nome }}</option>
+                    {% else %}
+                        <option value="">Selecione uma categoria</option>
+                    {% endif %}
+
                     {% for categoria in categorias %}
                         <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
                     {% endfor%}
@@ -59,7 +70,7 @@
             <div class="col-sm-4">
                 Selecionadas
                 <select name="tags_selecionadas" id="tags_selecionadas" multiple="multiple" style="width: 100%; height: 130px;" onDblClick="moveSelectedOptions(this.form['tags_selecionadas'], this.form['tags_disponiveis'], true, this.form['tags'].value)">
-                     {% for tag in tags_selecionadas %}
+                    {% for tag in tags_selecionadas %}
                         <option  value="{{tag.id}}">{{tag.nome}}</option>
                     {% endfor%}
                 </select>

@@ -31,6 +31,7 @@
             <label for="categoria" class="col-sm-2 control-label">Categoria</label>
             <div class="col-sm-2">
                 <select name="categoria" class="form-control">
+                    <option value="">Selecione uma categoria</option>
                     {% for categoria in categorias %}
                         <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
                     {% endfor%}

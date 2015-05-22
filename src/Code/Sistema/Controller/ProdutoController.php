@@ -40,13 +40,15 @@ class ProdutoController implements ControllerProviderInterface {
 
         $controller->get('/edit/{id}', function ($id) use ($app) {
             $result = $app['produtoService']->find($id);
-            return $app['twig']->render('produto/produto_edit.twig', ["produto" => $result,"categorias"=>$app['categoriaService']->findall(),"tags_selecionadas"=> $result->getTags(), "tags_disponiveis"=>$app['tagService']->getTagsAvailable($result->getTags())]);
+            return $app['twig']->render('produto/produto_edit.twig', ["produto" => $result,"Message" => [],"categorias"=>$app['categoriaService']->findall(),"tags_selecionadas"=> $result->getTags(), "tags_disponiveis"=>$app['tagService']->getTagsAvailable($result->getTags())]);
         })->bind('produto_edit');
 
         $controller->post('/edit', function (Request $request) use ($app) {
-            $app['produtoService']->update($request->request->all());
-            return $app->redirect("/produtos");
-        })->bind('produto_edit_post');
+            $serviceManager = $app['produtoService'];
+            $serviceManager->update($request->request->all());
+            $result = $serviceManager->find($request->get("id"));
+            return $app['twig']->render('produto/produto_edit.twig', ["produto" => $result,"Message" => $serviceManager->getMessage(),"categorias"=>$app['categoriaService']->findall(),"tags_selecionadas"=> $result->getTags(), "tags_disponiveis"=>$app['tagService']->getTagsAvailable($result->getTags())]);
+       })->bind('produto_edit_post');
 
         $controller->get('/delete/{id}', function ($id) use ($app) {
             $app['produtoService']->delete($id);

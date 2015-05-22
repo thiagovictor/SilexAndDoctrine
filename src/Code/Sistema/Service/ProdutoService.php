@@ -13,10 +13,16 @@ class ProdutoService extends AbstractService {
         $this->object = $produto;
         $this->entity = "Code\Sistema\Entity\Produto";
     }
-
-    public function ajustaData(array $data = array()) {
+    
+    public function posValidation() {
         $this->object->eraseTags();
-        $data["categoria"] = $this->em->getReference("Code\Sistema\Entity\Categoria", $data["categoria"]);
+    }
+    public function ajustaData(array $data = array()) {
+        
+        if(!empty($data["categoria"])){
+            $data["categoria"] = $this->em->getReference("Code\Sistema\Entity\Categoria", $data["categoria"]);
+        }
+        
         if (empty($data["tags"])) {
             return $data;
         }

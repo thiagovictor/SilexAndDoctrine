@@ -21,6 +21,7 @@ class Application extends ApplicationSilex {
         $app['produtoService'] = function () use($app) {
             $produtoService = new ProdutoService($app['EntityManager'], new Produto());
             $produtoService->setArrayValidators([
+                'categoria' => new IsBlankValidador(),
                 'valor' => new NumericValidador(),
                 'nome' => new IsBlankValidador(),
                 'tags' => new IsBlankValidador(),
