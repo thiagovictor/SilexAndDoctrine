@@ -6,8 +6,8 @@
             <ul>{{ mens }}</ul>
         </div>
     {% endfor%}
-    
-    <form class="form-horizontal" method="POST" action="{{ path('produto_edit_post') }}">
+
+    <form class="form-horizontal" method="POST" action="{{ path('produto_edit_post') }}" enctype="multipart/form-data">
         <div class="form-group">
             <label for="id" class="col-sm-2 control-label">ID</label>
             <div class="col-sm-4">
@@ -74,6 +74,14 @@
                         <option  value="{{tag.id}}">{{tag.nome}}</option>
                     {% endfor%}
                 </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="image" class="col-sm-2 control-label">Imagem</label>
+            <div class="col-sm-2">
+                <input type="file" name="image" id="image">
+                <p class="help-block">*Somente: jpg,bmp e png.</p>
+                <img src="{{ produto.image }}" alt="" class="img-thumbnail">
             </div>
         </div>
         <div class="form-group">

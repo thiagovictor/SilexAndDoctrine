@@ -4,9 +4,11 @@ namespace Code\Sistema\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Code\Sistema\Service\ProdutoService;
 
 /**
  * @ORM\Entity(repositoryClass="Code\Sistema\Entity\ProdutoRepository")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="produto")
  */
 class Produto {
@@ -48,12 +50,35 @@ class Produto {
      * */
     private $tags;
 
+    /**
+     * @ORM\Column(type="string", length=255) 
+     */
+    private $image;
+
     public function __construct($nome = "", $descricao = "", $valor = "", $id = "") {
         $this->tags = new ArrayCollection();
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->valor = $valor;
         $this->id = $id;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\preUpdate
+     */
+    public function uploadImage() {
+        $temp = $this->image;
+        if (!isset($_FILES["image"])) {
+            return false;
+        }
+        $result = ProdutoService::uploadImage($_FILES["image"]);
+        if ($result) {
+            $this->image = $result;
+            if (!empty($temp)) {
+                ProdutoService::removeImage($temp);
+            }
+        }
     }
 
     function getId() {
@@ -119,6 +144,10 @@ class Produto {
             $this->tags->add($tag);
         }
         return $this;
+    }
+
+    function getImage() {
+        return $this->image;
     }
 
 }
