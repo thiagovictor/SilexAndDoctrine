@@ -61,5 +61,9 @@ $app['debug'] = true;
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/src/Code/Sistema/views',
 ));
-
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new \Silex\Provider\FormServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.domains' => array(),
+));

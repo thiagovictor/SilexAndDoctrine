@@ -39,5 +39,12 @@ class Categoria {
         $this->nome = $nome;
         return $this;
     }
+    
+    public function toArray() {
+        return [
+          "id"=> $this->id,
+          "nome" => $this->nome  
+        ];
+    }
 
 }
